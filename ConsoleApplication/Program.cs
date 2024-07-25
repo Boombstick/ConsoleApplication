@@ -14,9 +14,6 @@ namespace ConsoleApplication
         static void Main(string[] args)
         {
             InitServices();
-            foreach (var arg in args)
-                Console.WriteLine(arg);
-
             FileStreamOptions options = new FileStreamOptions()
             {
                 Mode = FileMode.OpenOrCreate,
@@ -37,7 +34,7 @@ namespace ConsoleApplication
                 .ToList();
 
             var commandContainer = Services.GetRequiredService<CommandContainer>();
-            bool success = false;
+            bool operationsIsSuccess = false;
             foreach (var command in commands)
             {
 
@@ -47,8 +44,8 @@ namespace ConsoleApplication
                     if (commandContainer.CommandsByName.ContainsKey(command.Command))
                         commandContainer.CommandsByName[command.Command].Execute(employees, command.Arguments.ToArray());
                     else
-                        throw new KeyNotFoundException($"Команда {command.Command} не найдена");
-                    success = true;
+                        throw new InvalidOperationException($"Команды {command.Command} нет");
+                    operationsIsSuccess = true;
                 }
                 catch (Exception ex)
                 {
@@ -61,7 +58,7 @@ namespace ConsoleApplication
                     Console.WriteLine(consoleText);
                 }
             }
-            if (success)
+            if (operationsIsSuccess)
             {
                 // запись данных
                 using (StreamWriter writer = new StreamWriter("Employees.json", false))

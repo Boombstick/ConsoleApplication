@@ -1,5 +1,6 @@
 ﻿using ConsoleApplication.Models;
 using ConsoleApplication.Abstractions;
+using ConsoleApplication.Exeptions;
 
 namespace ConsoleApplication.Commands
 {
@@ -12,6 +13,9 @@ namespace ConsoleApplication.Commands
 
         public override void Execute(IList<Employee> employees, params string[] parameters)
         {
+            if (!employees.Any())
+                throw new NoUserException("В списке еще нет сотрудников");
+            
             foreach (var employee in employees)
             {
                 var message = $"Id = {employee.Id}, FirstName = {employee.FirstName}, LastName = {employee.LastName}, SalaryPerHour = {employee.SalaryPerHour}";

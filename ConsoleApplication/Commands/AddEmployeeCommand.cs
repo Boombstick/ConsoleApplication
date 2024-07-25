@@ -16,7 +16,6 @@ namespace ConsoleApplication.Commands
         {
             try
             {
-
                 if (parameters.Length != 3)
                     throw new ArgumentException("Указано недостаточно параметров");
 
@@ -43,7 +42,6 @@ namespace ConsoleApplication.Commands
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

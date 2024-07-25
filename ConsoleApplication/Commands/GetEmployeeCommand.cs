@@ -12,13 +12,20 @@ namespace ConsoleApplication.Commands
 
         public override void Execute(IList<Employee> employees, params string[] parameters)
         {
-            var id = int.Parse(ParameterUtils.TryGetParamValue(parameters.First(), "Id"));
-            var employee = employees.FirstOrDefault(
-                x => x.Id.Equals(id));
-            if (employee is null)
-                throw new NoUserException();
-            var message = $"Id = {employee.Id}, FirstName = {employee.FirstName}, LastName = {employee.LastName}, SalaryPerHour = {employee.SalaryPerHour}";
-            Console.WriteLine(message);
+            try
+            {
+                var id = int.Parse(ParameterUtils.TryGetParamValue(parameters.First(), "Id"));
+                var employee = employees.FirstOrDefault(
+                    x => x.Id.Equals(id));
+                if (employee is null)
+                    throw new NoUserException();
+                var message = $"Id = {employee.Id}, FirstName = {employee.FirstName}, LastName = {employee.LastName}, SalaryPerHour = {employee.SalaryPerHour}";
+                Console.WriteLine(message);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

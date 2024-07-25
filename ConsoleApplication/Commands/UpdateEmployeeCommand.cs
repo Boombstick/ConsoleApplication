@@ -13,23 +13,30 @@ namespace ConsoleApplication.Commands
 
         public override void Execute(IList<Employee> employees, params string[] parameters)
         {
-            var id = int.Parse(ParameterUtils.TryGetParamValue(parameters.First(), "Id"));
-            var employee = employees.FirstOrDefault(
-                x => x.Id.Equals(id));
-            if (employee is null)
-                throw new NoUserException();
-
-            foreach (var parameter in parameters.Skip(1))
+            try
             {
-                var param = ParameterUtils.TryGetKeyValueFromParameter(parameter);
-                try
+                var id = int.Parse(ParameterUtils.TryGetParamValue(parameters.First(), "Id"));
+                var employee = employees.FirstOrDefault(
+                    x => x.Id.Equals(id));
+                if (employee is null)
+                    throw new NoUserException();
+
+                foreach (var parameter in parameters.Skip(1))
                 {
-                    typeof(Employee).GetProperty(param.Key).SetValue(employee, param.Value);
+                    var param = ParameterUtils.TryGetKeyValueFromParameter(parameter);
+                    try
+                    {
+                        typeof(Employee).GetProperty(param.Key).SetValue(employee, param.Value);
+                    }
+                    catch (Exception)
+                    {
+                        throw new ArgumentException($"Неправильно задан параметр {param.Key}");
+                    }
                 }
-                catch (Exception)
-                {
-                    throw new ArgumentException($"Неправильно задан параметр {param.Key}");
-                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }
