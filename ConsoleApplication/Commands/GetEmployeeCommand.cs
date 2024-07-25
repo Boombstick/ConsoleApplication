@@ -14,7 +14,7 @@ namespace ConsoleApplication.Commands
         {
             try
             {
-                var id = int.Parse(ParameterUtils.TryGetParamValue(parameters.First(), "Id"));
+                var id = int.Parse(ParameterUtils.TryGetParamValue(parameters.First(), nameof(Employee.Id)));
                 var employee = employees.FirstOrDefault(
                     x => x.Id.Equals(id));
                 if (employee is null)

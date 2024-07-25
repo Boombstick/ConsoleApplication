@@ -20,9 +20,9 @@ namespace ConsoleApplication.Commands
                     throw new ArgumentException("Указано недостаточно параметров");
 
                 var id = employees.Any() ? employees.Max(x => x.Id) + 1 : 1;
-                var firstName = ParameterUtils.TryGetParamValue(parameters[0], "FirstName");
-                var lastName = ParameterUtils.TryGetParamValue(parameters[1], "LastName");
-                var salaryPerHour = ParameterUtils.TryGetParamValue(parameters[2], "SalaryPerHour").Replace('.', ',');
+                var firstName = ParameterUtils.TryGetParamValue(parameters[0], nameof(Employee.FirstName));
+                var lastName = ParameterUtils.TryGetParamValue(parameters[1], nameof(Employee.LastName));
+                var salaryPerHour = ParameterUtils.TryGetParamValue(parameters[2], nameof(Employee.SalaryPerHour)).Replace('.', ',');
 
                 var asdasd = _onlyNoLetters.Match(firstName);
                 if (_onlyNoLetters.IsMatch(firstName) || _onlyNoLetters.IsMatch(lastName))

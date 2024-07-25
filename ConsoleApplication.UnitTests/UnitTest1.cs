@@ -29,9 +29,9 @@ namespace ConsoleApplication.UnitTests
         {
             _addCommand.Execute(_employees, new[] { parameters[0], parameters[1], parameters[2] });
             Assert.That(_employees.First(x => x.Id == _employees.Count()), Is.EqualTo(new Employee(_employees.Count(),
-                ParameterUtils.TryGetParamValue(parameters[0],"FirstName"),
-                ParameterUtils.TryGetParamValue(parameters[1], "LastName"),
-                decimal.Parse(ParameterUtils.TryGetParamValue(parameters[2],"SalaryPerHour").Replace('.', ',')))));
+                ParameterUtils.TryGetParamValue(parameters[0],nameof(Employee.FirstName)),
+                ParameterUtils.TryGetParamValue(parameters[1], nameof(Employee.LastName)),
+                decimal.Parse(ParameterUtils.TryGetParamValue(parameters[2], nameof(Employee.SalaryPerHour)).Replace('.', ',')))));
         }
 
         [TestCase( "FirstName:Maxim", "Brasov" )]

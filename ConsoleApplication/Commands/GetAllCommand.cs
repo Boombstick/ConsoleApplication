@@ -1,6 +1,6 @@
 ﻿using ConsoleApplication.Models;
-using ConsoleApplication.Abstractions;
 using ConsoleApplication.Exeptions;
+using ConsoleApplication.Abstractions;
 
 namespace ConsoleApplication.Commands
 {

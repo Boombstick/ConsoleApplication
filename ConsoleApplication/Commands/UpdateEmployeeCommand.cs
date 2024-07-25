@@ -15,7 +15,7 @@ namespace ConsoleApplication.Commands
         {
             try
             {
-                var id = int.Parse(ParameterUtils.TryGetParamValue(parameters.First(), "Id"));
+                var id = int.Parse(ParameterUtils.TryGetParamValue(parameters.First(), nameof(Employee.Id)));
                 var employee = employees.FirstOrDefault(
                     x => x.Id.Equals(id));
                 if (employee is null)
@@ -26,7 +26,10 @@ namespace ConsoleApplication.Commands
                     var param = ParameterUtils.TryGetKeyValueFromParameter(parameter);
                     try
                     {
-                        typeof(Employee).GetProperty(param.Key).SetValue(employee, param.Value);
+                        if (!param.Key.Equals(nameof(Employee.SalaryPerHour)))
+                            typeof(Employee).GetProperty(param.Key).SetValue(employee, param.Value);
+                        else
+                            typeof(Employee).GetProperty(param.Key).SetValue(employee, decimal.Parse(param.Value.Replace('.', ',')));
                     }
                     catch (Exception)
                     {
