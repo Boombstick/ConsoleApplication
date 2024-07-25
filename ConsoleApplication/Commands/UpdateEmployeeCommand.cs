@@ -29,7 +29,9 @@ namespace ConsoleApplication.Commands
                         if (!param.Key.Equals(nameof(Employee.SalaryPerHour)))
                             typeof(Employee).GetProperty(param.Key).SetValue(employee, param.Value);
                         else
-                            typeof(Employee).GetProperty(param.Key).SetValue(employee, decimal.Parse(param.Value.Replace('.', ',')));
+                            typeof(Employee).GetProperty(param.Key).SetValue(employee, decimal.TryParse(param.Value.Replace('.', ','), out decimal result)
+                                                                                                        ? result
+                                                                                                        : throw new ArgumentException("Значение заплаты слишком мало или велико"));
                     }
                     catch (Exception)
                     {
