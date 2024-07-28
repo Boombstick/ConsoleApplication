@@ -38,6 +38,7 @@ namespace ConsoleApplication.UnitTests
         [TestCase("FirtName:Gena", "LastName:Bukin", "SalaryPerHour:101230,112312")]
         [TestCase("FirstName:Gena", "LastName Bukin", "SalaryPerHour:101230,112312")]
         [TestCase("FirstName:Gena", "LastName:Bukin", ":101230,112312")]
+        [TestCase("LastName:Gena", "FirstName:Bukin", "SalaryPerHour:101230,112312")]
         public void Should_ThrowException_When_ParameterNameIsInvalid(params string[] parameters)
         {
             Assert.Throws<ArgumentException>(() => _addCommand.Execute(_employees,parameters));

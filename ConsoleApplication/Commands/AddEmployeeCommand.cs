@@ -17,15 +17,15 @@ namespace ConsoleApplication.Commands
                     throw new ArgumentException("Указано недостаточно или слишком много параметров");
 
                 var id = employees.Any() ? employees.Max(x => x.Id) + 1 : 1;
-                var firstName = ParameterUtils.TryGetParamValue(parameters[0]);
-                var lastName = ParameterUtils.TryGetParamValue(parameters[1]);
-                var salaryPerHour = ParameterUtils.TryGetParamValue(parameters[2]);
+                var firstName = ParameterUtils.TryGetParamValue(parameters[0], nameof(Employee.FirstName));
+                var lastName = ParameterUtils.TryGetParamValue(parameters[1], nameof(Employee.LastName));
+                var salaryPerHour = ParameterUtils.TryGetParamValue(parameters[2], nameof(Employee.SalaryPerHour));
 
                 if (!string.IsNullOrEmpty(firstName.Error)
                     || !string.IsNullOrEmpty(lastName.Error)
                     || !string.IsNullOrEmpty(salaryPerHour.Error))
                 {
-                    throw new ArgumentException(string.Join(',', firstName.Error, lastName.Error, salaryPerHour.Error));
+                    throw new ArgumentException($"FirstName:{firstName.Error},LastName:{lastName.Error},Salary:{salaryPerHour.Error}");
                 }
 
                 employees.Add(new Employee(

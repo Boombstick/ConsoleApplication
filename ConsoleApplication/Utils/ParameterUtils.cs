@@ -30,6 +30,14 @@ namespace ConsoleApplication.Utils
 
         }
         public static (string Value, string Error) TryGetParamValue(string parameter) => TryGetParamValue(parameter, out string paramName);
+        public static (string Value, string Error) TryGetParamValue(string parameter, string parameterName)
+        {
+            var parameterValue = TryGetParamValue(parameter, out string paramName);
+            if (!paramName.Equals(parameterName))
+                return (string.Empty, "Параметры указаны не в том порядке (FirstName:  LastName: SalaryPerHour:)");
+            
+            return (parameterValue.Value, parameterValue.Error);
+        }
         private static (string Value, string Error) GetParamValue(string paramValue, string paramName)
         {
             if (paramName.Equals(nameof(Employee.Id)))

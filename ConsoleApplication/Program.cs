@@ -57,8 +57,11 @@ namespace ConsoleApplication
                 {
                     Console.WriteLine(consoleText);
                     if (operationsIsSuccess is false)
+                    {
+                        Console.WriteLine("Изменения отменены");
                         Environment.Exit(0);
-                    
+                    }
+
                 }
             }
             if (operationsIsSuccess)
@@ -67,7 +70,7 @@ namespace ConsoleApplication
                 using (StreamWriter writer = new StreamWriter("Employees.json", false))
                 {
                     JsonSerializer.Serialize<List<Employee>>(writer.BaseStream, employees);
-                    Console.WriteLine("Данные сохранены");
+                    Console.WriteLine("Изменения сохранены");
                 }
             }
         }
