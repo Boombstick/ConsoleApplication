@@ -1,6 +1,5 @@
 ﻿using ConsoleApplication.Utils;
 using ConsoleApplication.Models;
-using System.Text.RegularExpressions;
 using ConsoleApplication.Abstractions;
 
 namespace ConsoleApplication.Commands
@@ -9,35 +8,33 @@ namespace ConsoleApplication.Commands
     {
         public override string CommandName => "add";
         public override string Description => "Добавить нового сотрудника";
-        private readonly Regex _onlyNoLetters = new(@"[^a-zA-Zа-яА-ЯёЁ]");
-        private readonly Regex _onlyNoDigits = new(@"[^0-9\.,]");
 
         public override void Execute(IList<Employee> employees, params string[] parameters)
         {
             try
             {
                 if (parameters.Length != 3)
-                    throw new ArgumentException("Указано недостаточно параметров");
+                    throw new ArgumentException("Указано недостаточно или слишком много параметров");
 
                 var id = employees.Any() ? employees.Max(x => x.Id) + 1 : 1;
-                var firstName = ParameterUtils.TryGetParamValue(parameters[0], nameof(Employee.FirstName));
-                var lastName = ParameterUtils.TryGetParamValue(parameters[1], nameof(Employee.LastName));
-                var salaryPerHour = ParameterUtils.TryGetParamValue(parameters[2], nameof(Employee.SalaryPerHour)).Replace('.', ',');
+                var firstName = ParameterUtils.TryGetParamValue(parameters[0]);
+                var lastName = ParameterUtils.TryGetParamValue(parameters[1]);
+                var salaryPerHour = ParameterUtils.TryGetParamValue(parameters[2]);
 
-                var asdasd = _onlyNoLetters.Match(firstName);
-                if (_onlyNoLetters.IsMatch(firstName) || _onlyNoLetters.IsMatch(lastName))
-                    throw new ArgumentException("Имя или фамилия не могут содержать цифры");
-
-                if (_onlyNoDigits.IsMatch(salaryPerHour))
-                    throw new ArgumentException("Зарплата не может содержать буквы");
+                if (!string.IsNullOrEmpty(firstName.Error)
+                    || !string.IsNullOrEmpty(lastName.Error)
+                    || !string.IsNullOrEmpty(salaryPerHour.Error))
+                {
+                    throw new ArgumentException(string.Join(',', firstName.Error, lastName.Error, salaryPerHour.Error));
+                }
 
                 employees.Add(new Employee(
                     id: id,
-                    firstName: firstName,
-                    lastName: lastName,
-                    salaryPerHour: decimal.TryParse(salaryPerHour, out decimal result) 
-                                    ? result 
-                                    : throw new ArgumentException("Значение заплаты слишком мало или велико")
+                    firstName: firstName.Value,
+                    lastName: lastName.Value,
+                    salaryPerHour: decimal.TryParse(salaryPerHour.Value, out decimal result)
+                                    ? result
+                                    : throw new InvalidCastException("Значение зарплаты слишком велико")
                 ));
             }
             catch (Exception)

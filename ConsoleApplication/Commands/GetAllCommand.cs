@@ -8,7 +8,7 @@ namespace ConsoleApplication.Commands
     {
         public override string CommandName => "getall";
 
-        public override string Description => "Получить всех сотрудников";
+        public override string Description => "Получить всех сотрудников из списка";
 
 
         public override void Execute(IList<Employee> employees, params string[] parameters)

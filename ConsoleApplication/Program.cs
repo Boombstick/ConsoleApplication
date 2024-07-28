@@ -56,6 +56,9 @@ namespace ConsoleApplication
                 finally
                 {
                     Console.WriteLine(consoleText);
+                    if (operationsIsSuccess is false)
+                        Environment.Exit(0);
+                    
                 }
             }
             if (operationsIsSuccess)
